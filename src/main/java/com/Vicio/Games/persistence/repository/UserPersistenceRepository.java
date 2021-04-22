@@ -35,5 +35,10 @@ public class UserPersistenceRepository implements UserDomainRepository {
         return userCrudRepository.save(userEntity);
     }
 
+    @Override
+    public void deleteUser(int prId) {
+        userCrudRepository.deleteById(prId);
+    }
+
 
 }

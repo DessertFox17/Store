@@ -21,4 +21,6 @@ public class ProductDto {
     private int searchCounter;
     private boolean active;
     private List<CommentsListDto> comments;
+    private List<ImageListDto> images;
+    private SubcategoryDto subcategory;
 }

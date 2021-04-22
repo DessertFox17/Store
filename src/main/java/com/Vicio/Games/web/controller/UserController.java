@@ -19,8 +19,8 @@ public class UserController {
         return userService.findAllUSers();
     }
 
-    @GetMapping("/{id}")
-    public Map<String, Object> findUserByID(@PathVariable("id") int uid){
+    @GetMapping("/{uId}")
+    public Map<String, Object> findUserByID(@PathVariable("uId") int uid){
         return userService.findUserByID(uid);
     }
 
@@ -29,11 +29,18 @@ public class UserController {
         return userService.newUser(userDto);
     }
 
-    @PutMapping("/{id}")
-    public Map<String, Object> updateUser(@RequestBody UserDto userDto, @PathVariable("id") int id) {
+    @PutMapping("/{uId}")
+    public Map<String, Object> updateUser(@RequestBody UserDto userDto, @PathVariable("uId") int uId) {
 
-       return userService.updateUser(userDto, id);
+       return userService.updateUser(userDto, uId);
 
     }
+
+    @DeleteMapping("/{uId}")
+    public Map<String, String> deleteUsers(@PathVariable("uId") int uId){
+
+        return userService.deleteUsers(uId);
+    }
+
 
 }

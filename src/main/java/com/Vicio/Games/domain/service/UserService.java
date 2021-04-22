@@ -45,11 +45,11 @@ public class UserService {
         return map;
     }
 
-    public Map<String, Object> updateUser(UserDto userDto, int id) {
+    public Map<String, Object> updateUser(UserDto userDto, int uId) {
 
         Map<String, Object> map = new HashMap<>();
-        UserEntity user = userDomainRepository.findUserByID(id)
-                .orElseThrow(() -> new NotFound("User doesn´t exist, please return a valid Id"+id));
+        UserEntity user = userDomainRepository.findUserByID(uId)
+                .orElseThrow(() -> new NotFound("User doesn´t exist, please return a valid Id"+uId));
 
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
@@ -87,6 +87,20 @@ public class UserService {
         map.put("email", user.getEmail());
 
         return map;
+    }
+
+    public Map<String, String> deleteUsers(int uId){
+
+        Map<String, String> map = new HashMap<>();
+
+        UserEntity pUser = userDomainRepository.findUserByID(uId)
+                .orElseThrow(() -> new NotFound("User doesn´t exist, please return a valid Id"+uId));
+
+        userDomainRepository.deleteUser(uId);
+
+        map.put("message", "User: "+ pUser.getFirstName()+" "+pUser.getLastName()+" deleted succesfully");
+        return map;
+
     }
 
 }

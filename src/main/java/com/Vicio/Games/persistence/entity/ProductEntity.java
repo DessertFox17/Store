@@ -56,12 +56,12 @@ public class ProductEntity {
 
     //----------------RELATIONSHIPS--------------------------
 
-/*    @ManyToOne
+    @ManyToOne
     @JoinColumn(name = "subcategory_id", insertable = false, updatable = false)
-    private SubcategoryEntity pSubcategory;
+    private SubcategoryEntity subcategory;
 
-    @OneToMany(mappedBy = "pProduct" )
-    private List<ImageEntity> pImages;*/
+    @OneToMany(mappedBy = "product" )
+    private List<ImageEntity> images;
 
     @OneToMany(mappedBy = "product" )
     private List<CommentEntity> comments;
