@@ -13,9 +13,9 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @GetMapping("/native/{prId}")
-    public Map<String, Object> findproductsNative(@PathVariable("prId") int prId){
-        return productService.findproductsNative(prId);
+    @GetMapping("/native")
+    public Map<String, Object> findproductsNative(@RequestParam String name){
+        return productService.findproductsNative(name);
     }
 
     @GetMapping("/{id}")

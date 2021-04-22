@@ -69,3 +69,4 @@ public class ProductEntity {
 /*    @OneToMany(mappedBy = "pProduct")
     private List<ProductPurchaseEntity> pPurchases;*/
 }
+

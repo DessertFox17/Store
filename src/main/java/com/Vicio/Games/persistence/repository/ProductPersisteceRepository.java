@@ -21,7 +21,7 @@ public class ProductPersisteceRepository implements ProductDomainRepository {
     }
 
     @Override
-    public List<ProductEntity> findproductsNative(int prId) {
-        return productCrudRepository.findproductsNative(prId);
+    public List<Object[]> findproductsNative(String name) {
+        return productCrudRepository.findproductsNative(name);
     }
 }

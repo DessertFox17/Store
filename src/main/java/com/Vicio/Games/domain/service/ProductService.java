@@ -19,17 +19,17 @@ public class ProductService {
     @Autowired
     private ProductDomainRepository productDomainRepository;
 
-    public Map<String, Object> findproductsNative(int prid) {
+    public Map<String, Object> findproductsNative(String name) {
 
         Map<String, Object> map = new HashMap<>();
-        ModelMapper modelMapper = new ModelMapper();
-        List<ProductDto> products = new ArrayList<>();
+        //ModelMapper modelMapper = new ModelMapper();
+        //List<ProductDto> products = new ArrayList<>();
 
-        List<ProductEntity> pProducts = productDomainRepository.findproductsNative(prid);
+        List<Object[]> pProducts = productDomainRepository.findproductsNative(name);
 
-        pProducts.forEach(productEntity -> products.add(modelMapper.map(productEntity, ProductDto.class)));
+        //pProducts.forEach(productEntity -> products.add(modelMapper.map(productEntity, ProductDto.class)));
 
-        map.put("products", products);
+        map.put("products", pProducts);
 
         return map;
     }
