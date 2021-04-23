@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Data
@@ -66,9 +67,9 @@ public class UserEntity {
     @JoinColumn(name = "role_id", updatable = false, insertable = false)
     private RoleEntity role;
 
-   /* @OneToMany(mappedBy = "pUser")
-    private List<PurchaseEntity> pPurchases;
+/*    @OneToMany(mappedBy = "pUser")
+    private List<PurchaseEntity> pPurchases;*/
 
-    @OneToMany(mappedBy = "pUser")
-    private List<CommentEntity> pComments;*/
+    @OneToMany(mappedBy = "user")
+    private List<CommentEntity> comments;
 }

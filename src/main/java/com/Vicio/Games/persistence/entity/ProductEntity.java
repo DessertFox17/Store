@@ -66,7 +66,7 @@ public class ProductEntity {
     @OneToMany(mappedBy = "product" )
     private List<CommentEntity> comments;
 
-/*    @OneToMany(mappedBy = "pProduct")
-    private List<ProductPurchaseEntity> pPurchases;*/
+    @OneToMany(mappedBy = "product")
+    private List<ProductPurchaseEntity> purchases;
 }
 

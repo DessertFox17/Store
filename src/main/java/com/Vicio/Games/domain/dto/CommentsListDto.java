@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class CommentsListDto {
+    private UserListDto user;
     private String comment;
     private float qualification;
 }

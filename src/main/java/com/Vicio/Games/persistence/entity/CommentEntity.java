@@ -3,6 +3,7 @@ package com.Vicio.Games.persistence.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
 @Data
@@ -37,7 +38,7 @@ public class CommentEntity {
     @JoinColumn(name = "product_id", insertable = false, updatable = false)
     private ProductEntity product;
 
-   /* @ManyToOne
+    @ManyToOne
     @JoinColumn(name = "user_id", insertable = false, updatable = false)
-    private UserEntity pUser;*/
+    private UserEntity user;
 }
