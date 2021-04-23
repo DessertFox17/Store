@@ -2,6 +2,7 @@ package com.Vicio.Games.domain.service;
 
 import com.Vicio.Games.domain.dto.ProductDto;
 import com.Vicio.Games.domain.repository.ProductDomainRepository;
+import com.Vicio.Games.domain.repository.SubcategoryDomainRepository;
 import com.Vicio.Games.exceptions.NotFound;
 import com.Vicio.Games.persistence.entity.ProductEntity;
 import org.modelmapper.ModelMapper;
@@ -19,20 +20,22 @@ public class ProductService {
     @Autowired
     private ProductDomainRepository productDomainRepository;
 
-    public Map<String, Object> findproductsNative(String name) {
+    @Autowired
+    private SubcategoryDomainRepository subcategoryDomainRepository;
+
+    public Map<String, Object> smartFilter(String name) {
 
         Map<String, Object> map = new HashMap<>();
-        //ModelMapper modelMapper = new ModelMapper();
-        //List<ProductDto> products = new ArrayList<>();
 
-        List<Object[]> pProducts = productDomainRepository.findproductsNative(name);
+        List<String> pProducts = subcategoryDomainRepository.smartFilter(name);
 
-        //pProducts.forEach(productEntity -> products.add(modelMapper.map(productEntity, ProductDto.class)));
+        List<Object> results = new ArrayList<>(pProducts);
 
-        map.put("products", pProducts);
+        map.put("products", results);
 
         return map;
     }
+
 
     public Map<String, Object> findByID(int prId, boolean request) {
 

@@ -1,6 +1,7 @@
 package com.Vicio.Games.web.controller;
 
 import com.Vicio.Games.domain.service.ProductService;
+import com.Vicio.Games.domain.service.SubcategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,9 +14,9 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @GetMapping("/native")
-    public Map<String, Object> findproductsNative(@RequestParam String name){
-        return productService.findproductsNative(name);
+    @GetMapping("/smartFilter")
+    public Map<String, Object> smartFilter(@RequestParam String name){
+        return productService.smartFilter(name);
     }
 
     @GetMapping("/{id}")
