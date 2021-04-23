@@ -23,10 +23,10 @@ public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    private Integer uId;
+    private Integer usId;
 
     @Column(name = "role_id")
-    private Integer rId;
+    private Integer roId;
 
     @Column(name = "u_fname")
     private String firstName;
@@ -67,8 +67,8 @@ public class UserEntity {
     @JoinColumn(name = "role_id", updatable = false, insertable = false)
     private RoleEntity role;
 
-/*    @OneToMany(mappedBy = "pUser")
-    private List<PurchaseEntity> pPurchases;*/
+    @OneToMany(mappedBy = "user")
+    private List<PurchaseEntity> purchases;
 
     @OneToMany(mappedBy = "user")
     private List<CommentEntity> comments;

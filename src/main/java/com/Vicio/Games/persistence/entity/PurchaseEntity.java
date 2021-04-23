@@ -26,7 +26,7 @@ public class PurchaseEntity {
     private Integer stId;
 
     @Column(name = "user_id")
-    private Integer uId;
+    private Integer usId;
 
     @Column(name = "p_date")
     private LocalDateTime date;
