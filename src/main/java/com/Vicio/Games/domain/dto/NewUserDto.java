@@ -6,9 +6,9 @@ import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
-public class UserDto {
+public class NewUserDto {
 
-    private int uId;
+    private int usId;
     private String firstName;
     private String lastName;
     private int idNumber;
@@ -20,5 +20,5 @@ public class UserDto {
     private String email;
     private String password;
     private Boolean active;
-    private int rId;
+    private int roId;
 }

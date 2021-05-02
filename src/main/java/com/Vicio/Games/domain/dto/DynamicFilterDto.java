@@ -5,10 +5,10 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class CommentDto {
-    private int coId;
+public class DynamicFilterDto {
     private int prId;
-    private int usId;
-    private String comment;
-    private float qualification;
+    private String name;
+    private int stock;
+    private double price;
+    private String tumbnail;
 }

@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-public class ProductDto {
+public class NewProductDto {
     private int prId;
     private int scId;
     private String name;
@@ -20,7 +20,7 @@ public class ProductDto {
     private String details;
     private int searchCounter;
     private boolean active;
-    private List<CommentsListDto> comments;
-    private List<ImageListDto> images;
-    private SubcategoryDto subcategory;
+    private List<ShowCommentsDto> comments;
+    private List<ShowImagesDto> images;
+    private ShowSubcategoryDto subcategory;
 }

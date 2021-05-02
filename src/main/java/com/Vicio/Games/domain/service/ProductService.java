@@ -1,9 +1,10 @@
 package com.Vicio.Games.domain.service;
 
-import com.Vicio.Games.domain.dto.ProductDto;
+import com.Vicio.Games.domain.dto.DynamicFilterDto;
+import com.Vicio.Games.domain.dto.NewProductDto;
 import com.Vicio.Games.domain.repository.ProductDomainRepository;
-import com.Vicio.Games.domain.repository.SubcategoryDomainRepository;
 import com.Vicio.Games.exceptions.NotFound;
+import com.Vicio.Games.persistence.crud.SubcategoryCrudRepository;
 import com.Vicio.Games.persistence.entity.ProductEntity;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,17 +22,33 @@ public class ProductService {
     private ProductDomainRepository productDomainRepository;
 
     @Autowired
-    private SubcategoryDomainRepository subcategoryDomainRepository;
+    private SubcategoryCrudRepository scrud;
 
     public Map<String, Object> smartFilter(String name) {
 
         Map<String, Object> map = new HashMap<>();
 
-        List<String> pProducts = subcategoryDomainRepository.smartFilter(name);
+
+        List<String> pProducts = scrud.smartFilter(name);
 
         List<Object> results = new ArrayList<>(pProducts);
 
-        map.put("products", results);
+        map.put("results", results);
+
+        return map;
+    }
+
+    public Map<String, Object> dynamicFilter(String result, String request, int limit, int offset) {
+
+        Map<String, Object> map = new HashMap<>();
+        ModelMapper modelMapper = new ModelMapper();
+        List<DynamicFilterDto> products = new ArrayList<>();
+
+        List<ProductEntity> pProducts = productDomainRepository.dynamicFilter(result, request, limit, offset);
+
+        pProducts.forEach(productEntity -> products.add(modelMapper.map(productEntity, DynamicFilterDto.class)));
+
+        map.put("results", products);
 
         return map;
     }
@@ -45,9 +62,12 @@ public class ProductService {
         ProductEntity pProduct = productDomainRepository.findProductByID(prId)
                 .orElseThrow(() -> new NotFound("User doesn´t exist, please return a valid Id" + prId));
 
-        ProductDto product = modelMapper.map(pProduct, ProductDto.class);
+        NewProductDto product = modelMapper.map(pProduct, NewProductDto.class);
 
-        System.out.println(request);
+        Integer counter = pProduct.getSearchCounter();
+        counter += 1;
+        pProduct.setSearchCounter(counter);
+        productDomainRepository.newProduct(pProduct);
 
 
         map.put("prId", product.getPrId());
@@ -61,12 +81,23 @@ public class ProductService {
         map.put("details", product.getDetails());
         map.put("comments", product.getComments());
         map.put("images", product.getImages());
-        if(!request) map.put("subcategory", product.getSubcategory());
+        map.put("searchCounter", product.getSearchCounter());
+        if (!request) map.put("subcategory", product.getSubcategory());
 
         return map;
 
     }
 
+    public Map<String, Object> updateProduct(NewProductDto newProductDto) {
+
+        Map<String, Object> map = new HashMap<>();
+        ModelMapper modelMapper = new ModelMapper();
+
+        ProductEntity productEntity = modelMapper.map(newProductDto, ProductEntity.class);
+        productDomainRepository.newProduct(productEntity);
+
+        return null;
+    }
 
 
 }

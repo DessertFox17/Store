@@ -16,7 +16,7 @@ public class UserPersistenceRepository implements UserDomainRepository {
     private UserCrudRepository userCrudRepository;
 
     @Override
-    public List<UserEntity> findAllUSers() {
+    public List<UserEntity> findAllUsers() {
         return (List<UserEntity>) userCrudRepository.findAll();
     }
 

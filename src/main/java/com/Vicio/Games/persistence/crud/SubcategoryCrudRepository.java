@@ -10,14 +10,16 @@ import java.util.List;
 public interface SubcategoryCrudRepository extends CrudRepository<SubcategoryEntity, Integer> {
 
     @Query(
-            value = "SELECT s_name, pr_name, cat_name" +
-                    " FROM subcategory s  " +
-                    "  INNER JOIN product p" +
-                    "   ON s.subcategory_id = p.subcategory_id" +
-                    "    INNER JOIN category c" +
-                    "     ON s.category_id = c.category_id" +
-                    "       WHERE p.pr_name like %:name%",
-            nativeQuery = true)
-    List<String> smartFilter(@Param("name")String name);
+            value = " SELECT s_name FROM subcategory s " +
+                    " WHERE LOWER(s.s_name)  like %:name% " +
+                    " UNION" +
+                    " SELECT cat_name  FROM category c " +
+                    " WHERE LOWER(c.cat_name)  like %:name% " +
+                    " UNION" +
+                    " SELECT pr_name FROM product p " +
+                    " WHERE LOWER(p.pr_name) like %:name%"
+            ,nativeQuery = true)
+    List<String> smartFilter(@Param("name") String name);
+
 
 }

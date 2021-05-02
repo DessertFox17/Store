@@ -1,6 +1,6 @@
 package com.Vicio.Games.domain.service;
 
-import com.Vicio.Games.domain.dto.ImageDto;
+import com.Vicio.Games.domain.dto.NewImageDto;
 import com.Vicio.Games.domain.repository.ImageDomainRepository;
 import com.Vicio.Games.persistence.entity.ImageEntity;
 import org.modelmapper.ModelMapper;
@@ -17,12 +17,12 @@ public class ImageService {
     private ImageDomainRepository imageDomainRepository;
 
 
-    public Map<String, Object> newImage(ImageDto imageDto){
+    public Map<String, Object> newImage(NewImageDto newImageDto){
 
         Map<String, Object> map = new HashMap<>();
         ModelMapper modelMapper = new ModelMapper();
 
-        ImageEntity image = modelMapper.map(imageDto, ImageEntity.class);
+        ImageEntity image = modelMapper.map(newImageDto, ImageEntity.class);
         imageDomainRepository.newImage(image);
 
         map.put("Message", "Image saved succesfully");

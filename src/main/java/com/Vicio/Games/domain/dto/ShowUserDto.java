@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class ImageListDto {
-    private String url;
+public class ShowUserDto {
+    private String firstName;
+    private String lastName;
 }

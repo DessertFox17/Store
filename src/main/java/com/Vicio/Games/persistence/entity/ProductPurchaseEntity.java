@@ -16,13 +16,13 @@ public class ProductPurchaseEntity {
     //----------------TABLE COLUMNS---------------------------
 
     @EmbeddedId
-    private ProductPurchasePKEntity pId;
+    private ProductPurchasePKEntity pId = new ProductPurchasePKEntity();
 
     @Column(name = "pp_quantity")
     private Integer quantity;
 
     @Column(name = "pp_totsendcost")
-    private Double totShiCost;
+    private Double totShipCost;
 
     @Column(name = "pp_totprodscost")
     private Double totProdsCost;
@@ -33,6 +33,7 @@ public class ProductPurchaseEntity {
     //----------------RELATIONSHIPS---------------------------
 
     @ManyToOne
+    @MapsId("prId")
     @JoinColumn(name = "product_id", insertable = false, updatable = false)
     private ProductEntity product;
 

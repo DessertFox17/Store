@@ -5,9 +5,6 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class SubcategoryDto {
-
+public class ShowStatusDto {
     private String name;
-    private String description;
-    private CategoryDto category;
 }

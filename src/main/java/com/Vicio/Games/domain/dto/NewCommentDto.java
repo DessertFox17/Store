@@ -5,9 +5,10 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class ImageDto {
-    private int imId;
+public class NewCommentDto {
+    private int coId;
     private int prId;
-    private String url;
-
+    private int usId;
+    private String comment;
+    private float qualification;
 }

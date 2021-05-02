@@ -7,7 +7,7 @@ import java.util.Optional;
 
 
 public interface UserDomainRepository {
-    List<UserEntity> findAllUSers();
+    List<UserEntity> findAllUsers();
     UserEntity newUser(UserEntity userEntity);
     Optional<UserEntity> findUserByID(int uId);
     UserEntity updateUser(UserEntity userEntity);

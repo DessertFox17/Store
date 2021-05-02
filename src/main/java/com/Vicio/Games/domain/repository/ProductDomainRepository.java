@@ -7,5 +7,6 @@ import java.util.Optional;
 
 public interface ProductDomainRepository {
     Optional<ProductEntity> findProductByID(int prId);
-    List<Object[]> findproductsNative(String name);
+    List<ProductEntity> dynamicFilter(String result, String request, int limit, int offset);
+    ProductEntity newProduct(ProductEntity productEntity);
 }

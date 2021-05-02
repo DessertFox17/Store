@@ -1,6 +1,6 @@
 package com.Vicio.Games.web.controller;
 
-import com.Vicio.Games.domain.dto.UserDto;
+import com.Vicio.Games.domain.dto.NewUserDto;
 import com.Vicio.Games.domain.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +15,7 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/all")
-    public Map<String, Object> findAllUSers() {
+    public Map<String, Object> findAllUsers() {
         return userService.findAllUSers();
     }
 
@@ -25,14 +25,14 @@ public class UserController {
     }
 
     @PostMapping("/new")
-    public Map<String, Object> newUser(@RequestBody UserDto userDto){
-        return userService.newUser(userDto);
+    public Map<String, Object> newUser(@RequestBody NewUserDto newUserDto){
+        return userService.newUser(newUserDto);
     }
 
     @PutMapping("/{uId}")
-    public Map<String, Object> updateUser(@RequestBody UserDto userDto, @PathVariable("uId") int uId) {
+    public Map<String, Object> updateUser(@RequestBody NewUserDto newUserDto, @PathVariable("uId") int uId) {
 
-       return userService.updateUser(userDto, uId);
+       return userService.updateUser(newUserDto, uId);
 
     }
 

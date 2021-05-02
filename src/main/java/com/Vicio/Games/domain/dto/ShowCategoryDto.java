@@ -5,7 +5,6 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class UserListDto {
-    private String firstName;
-    private String lastName;
+public class ShowCategoryDto {
+    private String name;
 }

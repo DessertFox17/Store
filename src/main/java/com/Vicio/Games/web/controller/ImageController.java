@@ -1,10 +1,9 @@
 package com.Vicio.Games.web.controller;
 
 
-import com.Vicio.Games.domain.dto.ImageDto;
+import com.Vicio.Games.domain.dto.NewImageDto;
 import com.Vicio.Games.domain.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,8 +19,8 @@ public class ImageController {
     private ImageService imageService;
 
     @PostMapping("/new")
-    public Map<String, Object> newImage(@RequestBody ImageDto imageDto){
-        return imageService.newImage(imageDto);
+    public Map<String, Object> newImage(@RequestBody NewImageDto newImageDto){
+        return imageService.newImage(newImageDto);
     }
 
 }

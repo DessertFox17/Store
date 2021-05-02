@@ -1,6 +1,6 @@
 package com.Vicio.Games.domain.service;
 
-import com.Vicio.Games.domain.dto.UserDto;
+import com.Vicio.Games.domain.dto.NewUserDto;
 import com.Vicio.Games.domain.repository.UserDomainRepository;
 import com.Vicio.Games.exceptions.NotFound;
 import com.Vicio.Games.persistence.entity.UserEntity;
@@ -21,46 +21,46 @@ public class UserService {
 
         Map<String, Object> map = new HashMap<>();
         ModelMapper modelMapper = new ModelMapper();
-        List<UserDto> users = new ArrayList<>();
+        List<NewUserDto> users = new ArrayList<>();
 
-        List<UserEntity> pUsers = userDomainRepository.findAllUSers();
+        List<UserEntity> pUsers = userDomainRepository.findAllUsers();
 
-        pUsers.forEach(userEntity -> users.add(modelMapper.map(userEntity, UserDto.class)));
+        pUsers.forEach(userEntity -> users.add(modelMapper.map(userEntity, NewUserDto.class)));
 
         map.put("Users", users);
 
         return map;
     }
 
-    public Map<String, Object> newUser(UserDto userDto) {
+    public Map<String, Object> newUser(NewUserDto newUserDto) {
 
         Map<String, Object> map = new HashMap<>();
         ModelMapper modelMapper = new ModelMapper();
 
-        UserEntity userEntity = modelMapper.map(userDto, UserEntity.class);
+        UserEntity userEntity = modelMapper.map(newUserDto, UserEntity.class);
         userDomainRepository.newUser(userEntity);
 
         map.put("Message", "User created succesfully");
-        map.put("New User", userDto.getFirstName() + " " + userDto.getLastName());
+        map.put("New User", newUserDto.getFirstName() + " " + newUserDto.getLastName());
         return map;
     }
 
-    public Map<String, Object> updateUser(UserDto userDto, int uId) {
+    public Map<String, Object> updateUser(NewUserDto newUserDto, int uId) {
 
         Map<String, Object> map = new HashMap<>();
         UserEntity user = userDomainRepository.findUserByID(uId)
                 .orElseThrow(() -> new NotFound("User doesn´t exist, please return a valid Id"+uId));
 
-        user.setFirstName(userDto.getFirstName());
-        user.setLastName(userDto.getLastName());
-        user.setBirthDate(userDto.getBirthDate());
-        user.setAddress(userDto.getAddress());
-        user.setPhoneNumber(userDto.getPhoneNumber());
+        user.setFirstName(newUserDto.getFirstName());
+        user.setLastName(newUserDto.getLastName());
+        user.setBirthDate(newUserDto.getBirthDate());
+        user.setAddress(newUserDto.getAddress());
+        user.setPhoneNumber(newUserDto.getPhoneNumber());
 
 
         userDomainRepository.updateUser(user);
         map.put("Message", "User updated succesfully");
-        map.put("New User", userDto.getFirstName() + " " + userDto.getLastName());
+        map.put("New User", newUserDto.getFirstName() + " " + newUserDto.getLastName());
 
         return map;
     }
@@ -74,9 +74,9 @@ public class UserService {
         UserEntity pUser = userDomainRepository.findUserByID(uId)
                 .orElseThrow(() -> new NotFound("User doesn´t exist, please return a valid Id"+uId));
 
-        UserDto user = modelMapper.map(pUser, UserDto.class);
+        NewUserDto user = modelMapper.map(pUser, NewUserDto.class);
 
-        map.put("uId", user.getUId());
+        map.put("usId", user.getUsId());
         map.put("firstName", user.getFirstName());
         map.put("lastName", user.getLastName());
         map.put("idNumber", user.getIdNumber());

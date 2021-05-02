@@ -30,8 +30,8 @@ dependencies {
 	runtimeOnly 'org.postgresql:postgresql'
 
     //Lombok
-	compileOnly 'org.projectlombok:lombok:1.18.12'
-	annotationProcessor 'org.projectlombok:lombok:1.18.12'
+	compileOnly 'org.projectlombok:lombok:1.18.18'
+	annotationProcessor 'org.projectlombok:lombok:1.18.18'
 
 	//ModelMapper
 	implementation 'org.modelmapper:modelmapper:2.4.0'

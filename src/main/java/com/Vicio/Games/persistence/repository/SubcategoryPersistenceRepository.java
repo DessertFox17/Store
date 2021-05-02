@@ -4,8 +4,8 @@ import com.Vicio.Games.domain.repository.SubcategoryDomainRepository;
 import com.Vicio.Games.persistence.crud.SubcategoryCrudRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
 import java.util.List;
+import java.util.Locale;
 
 @Repository
 public class SubcategoryPersistenceRepository implements SubcategoryDomainRepository {
@@ -16,6 +16,6 @@ public class SubcategoryPersistenceRepository implements SubcategoryDomainReposi
 
     @Override
     public List<String> smartFilter(String name) {
-        return subcategoryCrudRepository.smartFilter(name);
+        return subcategoryCrudRepository.smartFilter(name.toLowerCase(Locale.ROOT));
     }
 }
