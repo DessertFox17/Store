@@ -14,7 +14,7 @@ public class PurchaseController {
     @Autowired
     private PurchaseService purchaseService;
 
-    @GetMapping("/c/{usId}")
+    @GetMapping("/client/{usId}")
     public Map<String, Object> getByClient(@PathVariable("usId") int usId) {
         return purchaseService.getByClient(usId);
     }
@@ -24,14 +24,19 @@ public class PurchaseController {
         return purchaseService.newPurchase(newPurchaseDto);
     }
 
-    @GetMapping("/p/{puId}")
+    @GetMapping("/find/{puId}")
     public Map<String, Object> getById(@PathVariable("puId") int puId){
         return purchaseService.getById(puId);
     }
 
-    @PutMapping("/{puId}")
-    public Map<String, Object> updatePurchase(@RequestBody NewPurchaseDto newPurchaseDto,@PathVariable("puId") int puId) {
-        return purchaseService.updatePurchase(newPurchaseDto,puId);
+    @PutMapping("/update")
+    public Map<String, Object> updatePurchase(@RequestBody NewPurchaseDto newPurchaseDto) {
+        return purchaseService.updatePurchase(newPurchaseDto);
+    }
+
+    @GetMapping("/find/{usId}/{stId}")
+    public Map<String, Object> getByUserandStatus(@PathVariable("usId") int usId, @PathVariable("stId")int stId){
+        return purchaseService.getByUserandStatus(usId,stId);
     }
 
 }

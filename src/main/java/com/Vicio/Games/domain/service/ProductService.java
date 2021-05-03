@@ -60,7 +60,7 @@ public class ProductService {
         ModelMapper modelMapper = new ModelMapper();
 
         ProductEntity pProduct = productDomainRepository.findProductByID(prId)
-                .orElseThrow(() -> new NotFound("User doesn´t exist, please return a valid Id" + prId));
+                .orElseThrow(() -> new NotFound("User doesn´t exist, please return a valid Id"));
 
         NewProductDto product = modelMapper.map(pProduct, NewProductDto.class);
 

@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface PurchaseCrudRepository extends CrudRepository<PurchaseEntity, Integer> {
     List<PurchaseEntity> findByUsId(int usId);
+    List<PurchaseEntity> findByUsIdAndStId(int usId, int stId);
 }

@@ -20,6 +20,11 @@ public class PurchasePersistenceRepository implements PurchaseDomaindRepository 
     }
 
     @Override
+    public List<PurchaseEntity> getByUserandStatus(int usId, int stId) {
+        return purchaseCrudRepository.findByUsIdAndStId(usId,stId);
+    }
+
+    @Override
     public Optional<PurchaseEntity> getById(int puId) {
         return purchaseCrudRepository.findById(puId);
     }
