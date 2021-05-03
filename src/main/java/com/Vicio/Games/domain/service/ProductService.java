@@ -69,7 +69,6 @@ public class ProductService {
         pProduct.setSearchCounter(counter);
         productDomainRepository.newProduct(pProduct);
 
-
         map.put("prId", product.getPrId());
         map.put("name", product.getName());
         map.put("price", product.getPrice());
@@ -85,7 +84,6 @@ public class ProductService {
         if (!request) map.put("subcategory", product.getSubcategory());
 
         return map;
-
     }
 
     public Map<String, Object> updateProduct(NewProductDto newProductDto) {

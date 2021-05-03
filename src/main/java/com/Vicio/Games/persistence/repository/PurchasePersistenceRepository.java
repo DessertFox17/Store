@@ -6,6 +6,7 @@ import com.Vicio.Games.persistence.entity.PurchaseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class PurchasePersistenceRepository implements PurchaseDomaindRepository {
@@ -19,7 +20,17 @@ public class PurchasePersistenceRepository implements PurchaseDomaindRepository 
     }
 
     @Override
+    public Optional<PurchaseEntity> getById(int puId) {
+        return purchaseCrudRepository.findById(puId);
+    }
+
+    @Override
     public PurchaseEntity newPurchase(PurchaseEntity purchaseEntity) {
+        return purchaseCrudRepository.save(purchaseEntity);
+    }
+
+    @Override
+    public PurchaseEntity updatePurchase(PurchaseEntity purchaseEntity) {
         return purchaseCrudRepository.save(purchaseEntity);
     }
 }

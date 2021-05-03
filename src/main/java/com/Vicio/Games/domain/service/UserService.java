@@ -49,7 +49,7 @@ public class UserService {
 
         Map<String, Object> map = new HashMap<>();
         UserEntity user = userDomainRepository.findUserByID(uId)
-                .orElseThrow(() -> new NotFound("User doesn´t exist, please return a valid Id"+uId));
+                .orElseThrow(() -> new NotFound("User doesn´t exist, please return a valid Id"));
 
         user.setFirstName(newUserDto.getFirstName());
         user.setLastName(newUserDto.getLastName());

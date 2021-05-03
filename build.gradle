@@ -19,7 +19,7 @@ repositories {
 }
 
 dependencies {
-	//SpringBoot
+	//Spring Boot Web
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
@@ -35,6 +35,11 @@ dependencies {
 
 	//ModelMapper
 	implementation 'org.modelmapper:modelmapper:2.4.0'
+
+    //Spring Boot Mail
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+
 
 }
 

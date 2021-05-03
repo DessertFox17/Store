@@ -10,7 +10,7 @@ import java.util.List;
 @NoArgsConstructor
 public class ShowPurchaseDto {
     private int puId;
-    private LocalDateTime dateTime;
+    private LocalDateTime date;
     private String payMethod;
     private String comment;
     private ShowStatusDto status;
