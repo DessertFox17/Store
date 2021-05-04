@@ -90,13 +90,13 @@ public class PurchaseService {
         return map;
     }
 
-    public Map<String, Object> getByUserandStatus(int usId, int stId){
+    public Map<String, Object> getByUserandStatus(int usId){
 
         Map<String, Object> map = new HashMap<>();
         ModelMapper modelMapper = new ModelMapper();
         List<ShowPurchaseDto> purchases = new ArrayList<>();
 
-        List<PurchaseEntity> pPurchases = purchaseDomaindRepository.getByUserandStatus(usId,stId);
+        List<PurchaseEntity> pPurchases = purchaseDomaindRepository.getByUserandStatus(usId,1);
         pPurchases.forEach(purchaseEntity -> purchases.add(modelMapper.map(purchaseEntity, ShowPurchaseDto.class)));
 
         map.put("Purchases in Cart",purchases);

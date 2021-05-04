@@ -81,7 +81,7 @@ public class ProductService {
         map.put("comments", product.getComments());
         map.put("images", product.getImages());
         map.put("searchCounter", product.getSearchCounter());
-        if (!request) map.put("subcategory", product.getSubcategory());
+        if (request) map.put("subcategory", product.getSubcategory());
 
         return map;
     }

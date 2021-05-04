@@ -2,6 +2,9 @@ package com.Vicio.Games.web.controller;
 
 import com.Vicio.Games.domain.dto.NewCommentDto;
 import com.Vicio.Games.domain.service.CommentService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,7 +21,9 @@ public class CommentController {
     private CommentService commentService;
 
     @PostMapping("/new")
-    public Map<String, Object> newCommment(@RequestBody NewCommentDto newCommentDto){
-        return commentService.newComment(newCommentDto);
+    @ApiOperation(value = "New comment", notes = "This endpoint creates a new comment")
+    @ApiResponse(code = 201, message = "Created")
+    public Map<String, Object> newCommment(@RequestBody NewCommentDto commentPayload){
+        return commentService.newComment(commentPayload);
     }
 }
