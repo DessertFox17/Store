@@ -52,7 +52,7 @@ public class PurchaseController {
 
     @PutMapping("/update")
     @ApiOperation(value = "Update purchase status",
-                  notes = "This endpoint updates the status of a purchase and notify the client")
+                  notes = "This endpoint updates the status of a purchase and notify the client by email")
     @ApiResponses({
             @ApiResponse(code = 201, message = "Created"),
             @ApiResponse(code = 400, message = "Bad Request"),

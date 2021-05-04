@@ -18,7 +18,7 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/all")
-    @ApiOperation(value = "Get all users", notes = "This endpoint finds the list of all users")
+    @ApiOperation(value = "Get all users", notes = "This endpoint gets the list of all users")
     @ApiResponses({
             @ApiResponse(code = 200, message = "Ok"),
             @ApiResponse(code = 403, message = "Forbiden")
@@ -28,7 +28,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    @ApiOperation(value = "Get a specific user", notes = "This endpoint finds a user by its id")
+    @ApiOperation(value = "Get a specific user", notes = "This endpoint gets a user by its id")
     @ApiResponses({
             @ApiResponse(code = 200, message = "Ok"),
             @ApiResponse(code = 403, message = "Forbiden"),
@@ -51,7 +51,7 @@ public class UserController {
     @PutMapping("/{id}")
     @ApiOperation(value = "Update an user", notes = "This endpoint updates an user")
     @ApiResponses({
-            @ApiResponse(code = 201, message = "Created"),
+            @ApiResponse(code = 200, message = "Ok"),
             @ApiResponse(code = 403, message = "Forbiden"),
             @ApiResponse(code = 400, message = "Bad Request")
     })
@@ -66,7 +66,7 @@ public class UserController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "Ok"),
             @ApiResponse(code = 403, message = "Forbiden"),
-            @ApiResponse(code = 400, message = "Bad Request")
+            @ApiResponse(code = 404, message = "Not Found")
     })
     public Map<String, String> deleteUsers(@PathVariable("id") int id){
 

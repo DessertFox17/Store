@@ -5,6 +5,7 @@ import com.Vicio.Games.domain.dto.NewImageDto;
 import com.Vicio.Games.domain.service.ImageService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,7 +23,11 @@ public class ImageController {
 
     @PostMapping("/new")
     @ApiOperation(value = "New image", notes = "This endpoint stores a new image for a product")
-    @ApiResponse(code = 201, message = "Created")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "Created"),
+            @ApiResponse(code = 403, message = "Forbiden"),
+            @ApiResponse(code = 404, message = "Bad Request")
+    })
     public Map<String, Object> newImage(@RequestBody NewImageDto imagePayload){
         return imageService.newImage(imagePayload);
     }
