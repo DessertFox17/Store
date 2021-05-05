@@ -103,4 +103,14 @@ public class UserService {
 
     }
 
+    public NewUserDto getByEmail(String mail) {
+
+        Map<String, Object> map = new HashMap<>();
+        ModelMapper modelMapper = new ModelMapper();
+
+        UserEntity pUser = userDomainRepository.getByEmail(mail)
+                .orElseThrow(() -> new NotFound("User doesn´t exist"));
+
+        return modelMapper.map(pUser, NewUserDto.class);
+    }
 }

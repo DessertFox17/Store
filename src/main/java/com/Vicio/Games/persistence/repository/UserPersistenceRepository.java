@@ -36,6 +36,11 @@ public class UserPersistenceRepository implements UserDomainRepository {
     }
 
     @Override
+    public Optional<UserEntity> getByEmail(String email) {
+        return userCrudRepository.findByEmail(email);
+    }
+
+    @Override
     public void deleteUser(int prId) {
         userCrudRepository.deleteById(prId);
     }

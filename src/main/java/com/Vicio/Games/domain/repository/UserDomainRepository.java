@@ -11,5 +11,6 @@ public interface UserDomainRepository {
     UserEntity newUser(UserEntity userEntity);
     Optional<UserEntity> findUserByID(int uId);
     UserEntity updateUser(UserEntity userEntity);
+    Optional<UserEntity> getByEmail(String email);
     void deleteUser(int prId);
 }
