@@ -27,14 +27,14 @@ public class UserController {
         return userService.findAllUSers();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/specific")
     @ApiOperation(value = "Get a specific user", notes = "This endpoint gets a user by its id")
     @ApiResponses({
             @ApiResponse(code = 200, message = "Ok"),
             @ApiResponse(code = 403, message = "Forbiden"),
             @ApiResponse(code = 404, message = "Not found")
     })
-    public Map<String, Object> findUserByID(@PathVariable("id") int id){
+    public Map<String, Object> findUserByID(@RequestParam int id){
         return userService.findUserByID(id);
     }
 
@@ -48,30 +48,28 @@ public class UserController {
         return userService.newUser(userPayload);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/update")
     @ApiOperation(value = "Update an user", notes = "This endpoint updates an user")
     @ApiResponses({
             @ApiResponse(code = 200, message = "Ok"),
             @ApiResponse(code = 403, message = "Forbiden"),
             @ApiResponse(code = 400, message = "Bad Request")
     })
-    public Map<String, Object> updateUser(@RequestBody NewUserDto userPayload, @PathVariable("id") int id) {
+    public Map<String, Object> updateUser(@RequestBody NewUserDto userPayload, @RequestParam int id) {
 
        return userService.updateUser(userPayload,id);
 
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete")
     @ApiOperation(value = "Delete an user", notes = "This endpoint deletes an user")
     @ApiResponses({
             @ApiResponse(code = 200, message = "Ok"),
             @ApiResponse(code = 403, message = "Forbiden"),
             @ApiResponse(code = 404, message = "Not Found")
     })
-    public Map<String, String> deleteUsers(@PathVariable("id") int id){
+    public Map<String, String> deleteUsers(@RequestParam int id){
 
         return userService.deleteUsers(id);
     }
-
-
 }

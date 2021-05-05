@@ -24,15 +24,15 @@ public class ProductController {
         return productService.smartFilter(name);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/specific")
     @ApiOperation(value = "Find a specific product",
             notes = "This endpoint finds a product by its id, with request = true, shows the category and subcategory")
     @ApiResponses({
             @ApiResponse(code = 200, message = "Ok"),
             @ApiResponse(code = 404, message = "Not Found")
     })
-    public Map<String, Object> findByID(@RequestParam(required = false) boolean request, @PathVariable("id") int prid){
-        return productService.findByID(prid,request);
+    public Map<String, Object> findByID(@RequestParam(required = false) boolean request, @RequestParam int id){
+        return productService.findByID(id,request);
     }
 
     @GetMapping("/dynamicfilter")

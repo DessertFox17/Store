@@ -17,14 +17,14 @@ public class PurchaseController {
     @Autowired
     private PurchaseService purchaseService;
 
-    @GetMapping("/client/{id}")
+    @GetMapping("/client")
     @ApiOperation(value = "Find a purchases by client", notes = "This endpoint gets all the purchases of a client")
     @ApiResponses({
             @ApiResponse(code = 200, message = "Ok"),
             @ApiResponse(code = 403, message = "Forbiden"),
             @ApiResponse(code = 404, message = "Not Found")
     })
-    public Map<String, Object> getByClient(@PathVariable("id") int id) {
+    public Map<String, Object> getByClient(@RequestParam int id) {
         return purchaseService.getByClient(id);
     }
 
@@ -39,14 +39,14 @@ public class PurchaseController {
         return purchaseService.newPurchase(purchasePayload);
     }
 
-    @GetMapping("/find/{id}")
+    @GetMapping("/specific")
     @ApiOperation(value = "Find a purchases by id", notes = "This endpoint gets a purchase by its id")
     @ApiResponses({
             @ApiResponse(code = 200, message = "Ok"),
             @ApiResponse(code = 403, message = "Forbiden"),
             @ApiResponse(code = 404, message = "Not Found")
     })
-    public Map<String, Object> getById(@PathVariable("id") int id){
+    public Map<String, Object> getById(@RequestParam int id){
         return purchaseService.getById(id);
     }
 
@@ -62,7 +62,7 @@ public class PurchaseController {
         return purchaseService.updatePurchase(purchasePayload);
     }
 
-    @GetMapping("/cart/{id}")
+    @GetMapping("/cart")
     @ApiOperation(value = "Find a the purchases in cart",
                   notes = "This endpoint gets the purchases in cart of an user")
     @ApiResponses({
@@ -70,7 +70,7 @@ public class PurchaseController {
             @ApiResponse(code = 403, message = "Forbiden"),
             @ApiResponse(code = 404, message = "Not Found")
     })
-    public Map<String, Object> getByUserandStatus(@PathVariable("id") int id){
+    public Map<String, Object> getByUserandStatus(@RequestParam int id){
         return purchaseService.getByUserandStatus(id);
     }
 
