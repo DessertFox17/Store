@@ -28,17 +28,14 @@ public class ProductService {
 
         Map<String, Object> map = new HashMap<>();
 
-
         List<String> pProducts = scrud.smartFilter(name);
-
         List<Object> results = new ArrayList<>(pProducts);
-
         map.put("results", results);
 
         return map;
     }
 
-    public Map<String, Object> dynamicFilter(String result, String request, int limit, int offset) {
+    public Map<String, Object> dynamicFilter(String result, String request, int limit, int offset){
 
         Map<String, Object> map = new HashMap<>();
         ModelMapper modelMapper = new ModelMapper();
@@ -60,7 +57,7 @@ public class ProductService {
         ModelMapper modelMapper = new ModelMapper();
 
         ProductEntity pProduct = productDomainRepository.findProductByID(prId)
-                .orElseThrow(() -> new NotFound("User doesn´t exist, please return a valid Id"));
+                .orElseThrow(() -> new NotFound("Product does not exist"));
 
         NewProductDto product = modelMapper.map(pProduct, NewProductDto.class);
 
@@ -85,17 +82,4 @@ public class ProductService {
 
         return map;
     }
-
-    public Map<String, Object> updateProduct(NewProductDto newProductDto) {
-
-        Map<String, Object> map = new HashMap<>();
-        ModelMapper modelMapper = new ModelMapper();
-
-        ProductEntity productEntity = modelMapper.map(newProductDto, ProductEntity.class);
-        productDomainRepository.newProduct(productEntity);
-
-        return null;
-    }
-
-
 }

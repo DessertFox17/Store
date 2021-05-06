@@ -3,6 +3,7 @@ package com.Vicio.Games.domain.service;
 import com.Vicio.Games.domain.dto.NewUserDto;
 import com.Vicio.Games.domain.repository.UserDomainRepository;
 import com.Vicio.Games.exceptions.NotFound;
+import com.Vicio.Games.exceptions.Unauthorized;
 import com.Vicio.Games.persistence.entity.UserEntity;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,7 +95,7 @@ public class UserService {
         Map<String, String> map = new HashMap<>();
 
         UserEntity pUser = userDomainRepository.findUserByID(uId)
-                .orElseThrow(() -> new NotFound("User doesn´t exist, please return a valid Id"+uId));
+                .orElseThrow(() -> new NotFound("User doesn´t exist, please return a valid Id"));
 
         userDomainRepository.deleteUser(uId);
 
@@ -103,13 +104,12 @@ public class UserService {
 
     }
 
-    public NewUserDto getByEmail(String mail) {
+    public NewUserDto getByEmail(String mail) throws Unauthorized {
 
-        Map<String, Object> map = new HashMap<>();
         ModelMapper modelMapper = new ModelMapper();
 
         UserEntity pUser = userDomainRepository.getByEmail(mail)
-                .orElseThrow(() -> new NotFound("User doesn´t exist"));
+                .orElseThrow(() -> new Unauthorized(""));
 
         return modelMapper.map(pUser, NewUserDto.class);
     }

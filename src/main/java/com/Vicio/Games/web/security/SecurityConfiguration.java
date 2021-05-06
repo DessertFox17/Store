@@ -39,6 +39,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.csrf().disable().authorizeRequests()
                 .antMatchers("/**/authenticate","/**/smartfilter","/**/dynamicfilter","/**/product/specific","/**/user/new")
                 .permitAll()
+                .antMatchers("/**/user/all").hasAnyAuthority("Super User","Admin")
+                .antMatchers("/**/user/delete").hasAnyAuthority("Super User","Admin")
+                .antMatchers("/**/image/new").hasAnyAuthority("Super User","Admin")
+                .antMatchers("/**/purchase/specific").hasAnyAuthority("Super User","Admin")
+                .antMatchers("/**/purchase/update").hasAnyAuthority("Super User","Admin")
                 .anyRequest()
                 .authenticated().and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);

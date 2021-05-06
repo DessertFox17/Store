@@ -2,6 +2,7 @@ package com.Vicio.Games.web.security;
 
 import com.Vicio.Games.domain.dto.NewUserDto;
 import com.Vicio.Games.domain.service.UserService;
+import com.Vicio.Games.exceptions.Unauthorized;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -21,14 +22,14 @@ public class JWTUtil {
 
     private static final String KEY = "@Warl0rd581@";
 
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(UserDetails userDetails) throws Unauthorized {
 
         Map<String, Object> map = new HashMap<>();
         NewUserDto user = userService.getByEmail(userDetails.getUsername());
 
         map.put("usId", user.getUsId());
         map.put("firstName", user.getFirstName());
-        map.put("lastName", user.getLastName());;
+        map.put("lastName", user.getLastName());
 
         return Jwts.builder()
                 .addClaims(map)
@@ -39,10 +40,9 @@ public class JWTUtil {
     }
 
 
-    public boolean ValidateToken(String token, UserDetails userDetails) {
+    public boolean ValidateToken(String token, UserDetails userDetails){
         return userDetails.getUsername().equals(extractUsername(token))
                 && !isTokenExpired(token);
-
     }
 
     private Claims getClaims(String token) {
@@ -53,9 +53,8 @@ public class JWTUtil {
         return getClaims(token).getSubject();
     }
 
-    public boolean isTokenExpired(String token) {
-        return getClaims(token).getExpiration().before(new Date());
-
+    public boolean isTokenExpired(String token){
+            return getClaims(token).getExpiration().before(new Date());
     }
 
 

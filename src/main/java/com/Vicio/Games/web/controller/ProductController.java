@@ -1,12 +1,14 @@
 package com.Vicio.Games.web.controller;
 
 import com.Vicio.Games.domain.service.ProductService;
+import com.Vicio.Games.exceptions.BadRequest;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Map;
 
 @RestController
@@ -43,7 +45,7 @@ public class ProductController {
             @ApiResponse(code = 200, message = "Ok"),
             @ApiResponse(code = 400, message = "Bad Request"),
     })
-    public Map<String, Object> dynamicFilter(@RequestParam String result,
+    public Map<String, Object> dynamicFilter(@Valid @RequestParam String result,
                                              @RequestParam int limit,
                                              @RequestParam int offset,
                                              @RequestParam(required = false) boolean alpha,
