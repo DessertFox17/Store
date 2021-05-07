@@ -9,7 +9,6 @@ import com.Vicio.Games.persistence.entity.ProductEntity;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,14 +37,21 @@ public class ProductService {
     public Map<String, Object> dynamicFilter(String result, String request, int limit, int offset){
 
         Map<String, Object> map = new HashMap<>();
+        Map<String, Object> page = new HashMap<>();
         ModelMapper modelMapper = new ModelMapper();
         List<DynamicFilterDto> products = new ArrayList<>();
 
         List<ProductEntity> pProducts = productDomainRepository.dynamicFilter(result, request, limit, offset);
+        Long counter = productDomainRepository.dynamicFilterCounter(result);
 
         pProducts.forEach(productEntity -> products.add(modelMapper.map(productEntity, DynamicFilterDto.class)));
 
+        page.put("limit", limit);
+        page.put("offset", offset);
+        page.put("total", counter);
+
         map.put("results", products);
+        map.put("page request",page);
 
         return map;
     }

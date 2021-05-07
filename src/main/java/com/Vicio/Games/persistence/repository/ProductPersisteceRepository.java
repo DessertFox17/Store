@@ -43,6 +43,11 @@ public class ProductPersisteceRepository implements ProductDomainRepository {
     }
 
     @Override
+    public Long dynamicFilterCounter(String result) {
+        return productCrudRepository.dynamicFilterCounter(result);
+    }
+
+    @Override
     public ProductEntity newProduct(ProductEntity productEntity) {
         return productCrudRepository.save(productEntity);
     }

@@ -16,6 +16,14 @@ public interface ProductCrudRepository extends CrudRepository<ProductEntity, Int
             " or lower(c.name) like %?1%")
     List<ProductEntity> dynamicFilter(String result, PageRequest sort);
 
+    @Query("select count (p) from ProductEntity p" +
+            " join p.subcategory s" +
+            " join s.category c" +
+            " where lower(p.name) like %?1%" +
+            " or lower(s.name) like %?1%" +
+            " or lower(c.name) like %?1%")
+    Long dynamicFilterCounter(String result);
+
 
     @Query(
             value = " SELECT pr_price FROM product p " +
