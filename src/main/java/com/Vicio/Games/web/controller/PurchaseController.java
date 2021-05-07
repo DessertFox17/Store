@@ -68,7 +68,7 @@ public class PurchaseController {
     }
 
     @GetMapping("/cart")
-    @ApiOperation(value = "Find a the purchases in cart",
+    @ApiOperation(value = "Find the purchases in cart",
                   notes = "This endpoint gets the purchases in cart of an user")
     @ApiResponses({
             @ApiResponse(code = 200, message = "Ok"),
