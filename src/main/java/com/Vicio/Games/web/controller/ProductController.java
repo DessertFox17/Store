@@ -1,7 +1,6 @@
 package com.Vicio.Games.web.controller;
 
 import com.Vicio.Games.domain.service.ProductService;
-import com.Vicio.Games.exceptions.BadRequest;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
