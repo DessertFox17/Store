@@ -1,15 +1,18 @@
 package com.Vicio.Games.domain.dto;
 
-import com.Vicio.Games.persistence.repository.ProductPersisteceRepository;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 @Data
 @NoArgsConstructor
 public class NewProductPurchaseDto {
+    @NotNull
+    @Min(value = 1)
     private int prId;
+
+    @NotNull
+    @Min(value = 1)
     private int quantity;
-    private double totShipCost;
-    private double totProdsCost;
-    private double purchaseCost;
 }

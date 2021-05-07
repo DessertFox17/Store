@@ -2,12 +2,17 @@ package com.Vicio.Games.web.controller;
 
 
 import com.Vicio.Games.domain.dto.NewPurchaseDto;
+import com.Vicio.Games.domain.dto.UpdatePurchaseStatusDto;
 import com.Vicio.Games.domain.service.PurchaseService;
+import com.Vicio.Games.exceptions.BadRequest;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 import java.util.Map;
 
 @RestController
@@ -35,8 +40,8 @@ public class PurchaseController {
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 403, message = "Forbiden")
     })
-    public Map<String, Object> newPurchase(@RequestBody NewPurchaseDto purchasePayload) {
-        return purchaseService.newPurchase(purchasePayload);
+    public Map<String, Object> newPurchase(@Valid @RequestBody NewPurchaseDto purchasePayload, BindingResult bindingResult) throws BadRequest {
+        return purchaseService.newPurchase(purchasePayload, bindingResult);
     }
 
     @GetMapping("/specific")
@@ -58,8 +63,8 @@ public class PurchaseController {
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 403, message = "Forbiden")
     })
-    public Map<String, Object> updatePurchase(@RequestBody NewPurchaseDto purchasePayload) {
-        return purchaseService.updatePurchase(purchasePayload);
+    public Map<String, Object> updatePurchase(@Valid @RequestBody UpdatePurchaseStatusDto purchasePayload, BindingResult bindingResult) throws BadRequest {
+        return purchaseService.updatePurchase(purchasePayload, bindingResult);
     }
 
     @GetMapping("/cart")
@@ -68,7 +73,6 @@ public class PurchaseController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "Ok"),
             @ApiResponse(code = 403, message = "Forbiden"),
-            @ApiResponse(code = 404, message = "Not Found")
     })
     public Map<String, Object> getByUserandStatus(@RequestParam int id){
         return purchaseService.getByUserandStatus(id);

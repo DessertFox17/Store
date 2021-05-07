@@ -9,4 +9,6 @@ public interface ProductDomainRepository {
     Optional<ProductEntity> findProductByID(int prId);
     List<ProductEntity> dynamicFilter(String result, String request, int limit, int offset);
     ProductEntity newProduct(ProductEntity productEntity);
+    Double getPrice(int prId);
+    Double getShipCost(int prId);
 }

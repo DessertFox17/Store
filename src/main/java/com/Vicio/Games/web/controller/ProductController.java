@@ -46,8 +46,8 @@ public class ProductController {
             @ApiResponse(code = 400, message = "Bad Request"),
     })
     public Map<String, Object> dynamicFilter(@Valid @RequestParam String result,
-                                             @RequestParam int limit,
-                                             @RequestParam int offset,
+                                             @RequestParam(required = false, defaultValue = "5") int limit,
+                                             @RequestParam(required = false, defaultValue = "0") int offset,
                                              @RequestParam(required = false) boolean alpha,
                                              @RequestParam(required = false) boolean min,
                                              @RequestParam(required = false) boolean max){

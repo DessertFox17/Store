@@ -1,15 +1,21 @@
 package com.Vicio.Games.domain.service;
 
 import com.Vicio.Games.domain.dto.NewPurchaseDto;
+import com.Vicio.Games.domain.dto.ShowCartDto;
 import com.Vicio.Games.domain.dto.ShowPurchaseDto;
+import com.Vicio.Games.domain.dto.UpdatePurchaseStatusDto;
+import com.Vicio.Games.domain.repository.ProductDomainRepository;
 import com.Vicio.Games.domain.repository.PurchaseDomaindRepository;
 import com.Vicio.Games.domain.repository.StatusDomainRepository;
+import com.Vicio.Games.exceptions.BadRequest;
 import com.Vicio.Games.exceptions.NotFound;
 import com.Vicio.Games.persistence.entity.PurchaseEntity;
 import lombok.Getter;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,6 +34,9 @@ public class PurchaseService {
     @Autowired
     private StatusDomainRepository statusDomainRepository;
 
+    @Autowired
+    private ProductDomainRepository productDomainRepository;
+
     public Map<String, Object> getByClient(int usId) {
 
         Map<String, Object> map = new HashMap<>();
@@ -43,35 +52,59 @@ public class PurchaseService {
         return map;
     }
 
-    public Map<String, Object> newPurchase(NewPurchaseDto newPurchaseDto) {
+    public Map<String, Object> newPurchase(NewPurchaseDto newPurchaseDto, BindingResult bindingResult) throws BadRequest {
 
         Map<String, Object> map = new HashMap<>();
         ModelMapper modelMapper = new ModelMapper();
 
+        if (bindingResult.hasErrors()) {
+            throw new BadRequest("All mandatory fields are incomplete");
+        }
+
         PurchaseEntity purchase = modelMapper.map(newPurchaseDto, PurchaseEntity.class);
         purchase.getProducts().forEach(product -> product.setPurchase(purchase));
+
+        purchase.getProducts().
+                forEach(productPurchaseEntity -> productPurchaseEntity
+                        .setTotProdsCost(productDomainRepository.getPrice(productPurchaseEntity
+                                .getProduct().getPrId()) * productPurchaseEntity.getQuantity()));
+
+        purchase.getProducts()
+                .forEach(productPurchaseEntity -> productPurchaseEntity
+                .setTotShipCost(productDomainRepository.getShipCost(productPurchaseEntity.getProduct()
+                        .getPrId()) * productPurchaseEntity.getQuantity()));
+
+        purchase.getProducts()
+                .forEach(productPurchaseEntity -> productPurchaseEntity
+                        .setPurchaseCost(productPurchaseEntity.getTotProdsCost() + productPurchaseEntity
+                                .getTotShipCost()));
+
         purchaseDomaindRepository.newPurchase(purchase);
 
         map.put("Message", "Products purchased succesfully");
         return map;
     }
 
-    public Map<String, Object> updatePurchase(NewPurchaseDto newPurchaseDto) {
+    public Map<String, Object> updatePurchase(UpdatePurchaseStatusDto purchasePayload, BindingResult bindingResult) throws BadRequest {
 
         Map<String, Object> map = new HashMap<>();
 
-        PurchaseEntity purchase = purchaseDomaindRepository.getById(newPurchaseDto.getPuId())
+        if (bindingResult.hasErrors()) {
+            throw new BadRequest("All mandatory fields are incomplete");
+        }
+
+        PurchaseEntity purchase = purchaseDomaindRepository.getById(purchasePayload.getPuId())
                 .orElseThrow(() -> new NotFound("Purchase doesn't exist"));
 
 
-        purchase.setStId(newPurchaseDto.getStId());
+        purchase.setStId(purchasePayload.getStId());
         purchaseDomaindRepository.updatePurchase(purchase);
 
-        notificationService.sendNotification(newPurchaseDto.getUsId(),newPurchaseDto.getStId());
+        notificationService.sendNotification(purchasePayload.getUsId(), purchasePayload.getStId());
 
 
         map.put("Message", "Purchase updated succesfully");
-        map.put("New Status", statusDomainRepository.findStatusById(newPurchaseDto.getStId()).get().getName());
+        map.put("New Status", statusDomainRepository.findStatusById(purchasePayload.getStId()).get().getName());
         return map;
     }
 
@@ -90,17 +123,22 @@ public class PurchaseService {
         return map;
     }
 
-    public Map<String, Object> getByUserandStatus(int usId){
+    public Map<String, Object> getByUserandStatus(int usId) {
 
         Map<String, Object> map = new HashMap<>();
         ModelMapper modelMapper = new ModelMapper();
-        List<ShowPurchaseDto> purchases = new ArrayList<>();
+        List<ShowCartDto> purchases = new ArrayList<>();
 
-        List<PurchaseEntity> pPurchases = purchaseDomaindRepository.getByUserandStatus(usId,1);
-        pPurchases.forEach(purchaseEntity -> purchases.add(modelMapper.map(purchaseEntity, ShowPurchaseDto.class)));
+        List<PurchaseEntity> pPurchases = purchaseDomaindRepository.getByUserandStatus(usId, 1);
+        pPurchases.forEach(purchaseEntity -> purchases.add(modelMapper.map(purchaseEntity, ShowCartDto.class)));
 
-        map.put("Purchases in Cart",purchases);
+        map.put("Purchases in Cart", purchases);
 
         return map;
+    }
+
+    private void newPurchasetoPurchaseEntity(ModelMapper modelMapper){
+
+
     }
 }

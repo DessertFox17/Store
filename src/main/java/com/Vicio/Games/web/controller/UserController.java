@@ -1,13 +1,17 @@
 package com.Vicio.Games.web.controller;
 
 import com.Vicio.Games.domain.dto.NewUserDto;
+import com.Vicio.Games.domain.dto.UpdateUserDto;
 import com.Vicio.Games.domain.service.UserService;
+import com.Vicio.Games.exceptions.BadRequest;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Map;
 
 @RestController
@@ -42,23 +46,21 @@ public class UserController {
     @ApiOperation(value = "Create a new user", notes = "This endpoint creates a new user")
     @ApiResponses({
             @ApiResponse(code = 201, message = "Created"),
-            @ApiResponse(code = 404, message = "Bad Request")
+            @ApiResponse(code = 400, message = "Bad Request")
     })
-    public Map<String, Object> newUser(@RequestBody NewUserDto userPayload){
-        return userService.newUser(userPayload);
+    public Map<String, Object> newUser(@Valid @RequestBody NewUserDto userPayload, BindingResult bindingResult) throws BadRequest {
+        return userService.newUser(userPayload,bindingResult);
     }
 
     @PutMapping("/update")
     @ApiOperation(value = "Update an user", notes = "This endpoint updates an user")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "Ok"),
-            @ApiResponse(code = 403, message = "Forbiden"),
-            @ApiResponse(code = 400, message = "Bad Request")
+            @ApiResponse(code = 200, message = "Created"),
+            @ApiResponse(code = 400, message = "Bad Request"),
+            @ApiResponse(code = 403, message = "Forbiden")
     })
-    public Map<String, Object> updateUser(@RequestBody NewUserDto userPayload, @RequestParam int id) {
-
-       return userService.updateUser(userPayload,id);
-
+    public Map<String, Object> updateUser(@Valid @RequestBody UpdateUserDto userPayload, @RequestParam int id, BindingResult bindingResult) throws BadRequest {
+       return userService.updateUser(userPayload,id, bindingResult);
     }
 
     @DeleteMapping("/delete")
@@ -69,7 +71,6 @@ public class UserController {
             @ApiResponse(code = 404, message = "Not Found")
     })
     public Map<String, String> deleteUsers(@RequestParam int id){
-
         return userService.deleteUsers(id);
     }
 }

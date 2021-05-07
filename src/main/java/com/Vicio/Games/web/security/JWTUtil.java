@@ -40,7 +40,7 @@ public class JWTUtil {
     }
 
 
-    public boolean ValidateToken(String token, UserDetails userDetails){
+    public boolean ValidateToken(String token, UserDetails userDetails) {
         return userDetails.getUsername().equals(extractUsername(token))
                 && !isTokenExpired(token);
     }
@@ -53,8 +53,8 @@ public class JWTUtil {
         return getClaims(token).getSubject();
     }
 
-    public boolean isTokenExpired(String token){
-            return getClaims(token).getExpiration().before(new Date());
+    public boolean isTokenExpired(String token) {
+        return getClaims(token).getExpiration().before(new Date());
     }
 
 

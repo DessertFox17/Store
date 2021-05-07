@@ -16,4 +16,17 @@ public interface ProductCrudRepository extends CrudRepository<ProductEntity, Int
             " or lower(c.name) like %?1%")
     List<ProductEntity> dynamicFilter(String result, PageRequest sort);
 
+
+    @Query(
+            value = " SELECT pr_price FROM product p " +
+                    " WHERE product_id = :prId "
+            ,nativeQuery = true)
+    Double getPrice(int prId);
+
+    @Query(
+            value = " SELECT pr_sendcost FROM product p " +
+                    " WHERE product_id = :prId "
+            ,nativeQuery = true)
+    Double getShipCost(int prId);
+
 }

@@ -46,4 +46,14 @@ public class ProductPersisteceRepository implements ProductDomainRepository {
     public ProductEntity newProduct(ProductEntity productEntity) {
         return productCrudRepository.save(productEntity);
     }
+
+    @Override
+    public Double getPrice(int prId) {
+        return productCrudRepository.getPrice(prId);
+    }
+
+    @Override
+    public Double getShipCost(int prId) {
+        return productCrudRepository.getShipCost(prId);
+    }
 }

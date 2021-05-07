@@ -1,13 +1,16 @@
 package com.Vicio.Games.domain.service;
 
 import com.Vicio.Games.domain.dto.NewUserDto;
+import com.Vicio.Games.domain.dto.UpdateUserDto;
 import com.Vicio.Games.domain.repository.UserDomainRepository;
+import com.Vicio.Games.exceptions.BadRequest;
 import com.Vicio.Games.exceptions.NotFound;
 import com.Vicio.Games.exceptions.Unauthorized;
 import com.Vicio.Games.persistence.entity.UserEntity;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
 
 import java.util.*;
 
@@ -33,12 +36,17 @@ public class UserService {
         return map;
     }
 
-    public Map<String, Object> newUser(NewUserDto newUserDto) {
+    public Map<String, Object> newUser(NewUserDto newUserDto, BindingResult bindingResult) throws BadRequest {
 
         Map<String, Object> map = new HashMap<>();
         ModelMapper modelMapper = new ModelMapper();
 
+        if(bindingResult.hasErrors()){
+            throw new BadRequest("Mandatory fields are incomplete");
+        }
+
         UserEntity userEntity = modelMapper.map(newUserDto, UserEntity.class);
+        userEntity.setRoId(3);
         userDomainRepository.newUser(userEntity);
 
         map.put("Message", "User created succesfully");
@@ -46,22 +54,25 @@ public class UserService {
         return map;
     }
 
-    public Map<String, Object> updateUser(NewUserDto newUserDto, int uId) {
+    public Map<String, Object> updateUser(UpdateUserDto userPayload, int uId, BindingResult bindingResult) throws BadRequest {
 
         Map<String, Object> map = new HashMap<>();
+        if(bindingResult.hasErrors()){
+            throw new BadRequest("Mandatory fields are incomplete");
+        }
         UserEntity user = userDomainRepository.findUserByID(uId)
                 .orElseThrow(() -> new NotFound("User doesn´t exist, please return a valid Id"));
 
-        user.setFirstName(newUserDto.getFirstName());
-        user.setLastName(newUserDto.getLastName());
-        user.setBirthDate(newUserDto.getBirthDate());
-        user.setAddress(newUserDto.getAddress());
-        user.setPhoneNumber(newUserDto.getPhoneNumber());
+        user.setFirstName(userPayload.getFirstName());
+        user.setLastName(userPayload.getLastName());
+        user.setBirthDate(userPayload.getBirthDate());
+        user.setAddress(userPayload.getAddress());
+        user.setPhoneNumber(userPayload.getPhoneNumber());
 
 
         userDomainRepository.updateUser(user);
         map.put("Message", "User updated succesfully");
-        map.put("New User", newUserDto.getFirstName() + " " + newUserDto.getLastName());
+        map.put("New User", userPayload.getFirstName() + " " + userPayload.getLastName());
 
         return map;
     }
@@ -73,7 +84,7 @@ public class UserService {
         ModelMapper modelMapper = new ModelMapper();
 
         UserEntity pUser = userDomainRepository.findUserByID(uId)
-                .orElseThrow(() -> new NotFound("User doesn´t exist, please return a valid Id"+uId));
+                .orElseThrow(() -> new NotFound("User doesn´t exist, please return a valid Id"));
 
         NewUserDto user = modelMapper.map(pUser, NewUserDto.class);
 
