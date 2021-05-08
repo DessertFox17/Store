@@ -3,10 +3,10 @@ package com.Vicio.Games.web.controller;
 import com.Vicio.Games.domain.dto.NewUserDto;
 import com.Vicio.Games.domain.dto.UpdateUserDto;
 import com.Vicio.Games.domain.service.UserService;
-import com.Vicio.Games.exceptions.BadRequest;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -38,7 +38,7 @@ public class UserController {
             @ApiResponse(code = 403, message = "Forbiden"),
             @ApiResponse(code = 404, message = "Not found")
     })
-    public Map<String, Object> findUserByID(@RequestParam int id){
+    public Map<String, Object> findUserByID(@RequestParam int id) throws NotFoundException {
         return userService.findUserByID(id);
     }
 
@@ -48,7 +48,7 @@ public class UserController {
             @ApiResponse(code = 201, message = "Created"),
             @ApiResponse(code = 400, message = "Bad Request")
     })
-    public Map<String, Object> newUser(@Valid @RequestBody NewUserDto userPayload, BindingResult bindingResult) throws BadRequest {
+    public Map<String, Object> newUser(@Valid @RequestBody NewUserDto userPayload, BindingResult bindingResult){
         return userService.newUser(userPayload,bindingResult);
     }
 
@@ -59,7 +59,7 @@ public class UserController {
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 403, message = "Forbiden")
     })
-    public Map<String, Object> updateUser(@Valid @RequestBody UpdateUserDto userPayload, @RequestParam int id, BindingResult bindingResult) throws BadRequest {
+    public Map<String, Object> updateUser(@Valid @RequestBody UpdateUserDto userPayload, @RequestParam int id, BindingResult bindingResult) throws NotFoundException {
        return userService.updateUser(userPayload,id, bindingResult);
     }
 
@@ -70,7 +70,7 @@ public class UserController {
             @ApiResponse(code = 403, message = "Forbiden"),
             @ApiResponse(code = 404, message = "Not Found")
     })
-    public Map<String, String> deleteUsers(@RequestParam int id){
+    public Map<String, String> deleteUsers(@RequestParam int id) throws NotFoundException {
         return userService.deleteUsers(id);
     }
 }

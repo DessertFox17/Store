@@ -3,10 +3,8 @@ package com.Vicio.Games.domain.service;
 import com.Vicio.Games.domain.dto.NewUserDto;
 import com.Vicio.Games.domain.dto.UpdateUserDto;
 import com.Vicio.Games.domain.repository.UserDomainRepository;
-import com.Vicio.Games.exceptions.BadRequest;
-import com.Vicio.Games.exceptions.NotFound;
-import com.Vicio.Games.exceptions.Unauthorized;
 import com.Vicio.Games.persistence.entity.UserEntity;
+import javassist.NotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,13 +34,13 @@ public class UserService {
         return map;
     }
 
-    public Map<String, Object> newUser(NewUserDto newUserDto, BindingResult bindingResult) throws BadRequest {
+    public Map<String, Object> newUser(NewUserDto newUserDto, BindingResult bindingResult){
 
         Map<String, Object> map = new HashMap<>();
         ModelMapper modelMapper = new ModelMapper();
 
         if(bindingResult.hasErrors()){
-            throw new BadRequest("Mandatory fields are incomplete");
+            throw new IllegalArgumentException("all or some mandatory fields are incomplete");
         }
 
         UserEntity userEntity = modelMapper.map(newUserDto, UserEntity.class);
@@ -54,14 +52,19 @@ public class UserService {
         return map;
     }
 
-    public Map<String, Object> updateUser(UpdateUserDto userPayload, int uId, BindingResult bindingResult) throws BadRequest {
+    public Map<String, Object> updateUser(UpdateUserDto userPayload, int uId, BindingResult bindingResult) throws NotFoundException {
 
         Map<String, Object> map = new HashMap<>();
+
         if(bindingResult.hasErrors()){
-            throw new BadRequest("Mandatory fields are incomplete");
+            throw new IllegalArgumentException("all or some mandatory fields are incomplete");
         }
-        UserEntity user = userDomainRepository.findUserByID(uId)
-                .orElseThrow(() -> new NotFound("User doesn´t exist, please return a valid Id"));
+
+        UserEntity user = userDomainRepository.findUserByID(uId).orElse(null);
+
+        if(user == null){
+            throw new NotFoundException(String.format("The user with id: %s does not exist",uId));
+        }
 
         user.setFirstName(userPayload.getFirstName());
         user.setLastName(userPayload.getLastName());
@@ -78,13 +81,16 @@ public class UserService {
     }
 
 
-    public Map<String, Object> findUserByID(int uId) {
+    public Map<String, Object> findUserByID(int uId) throws NotFoundException {
 
         Map<String, Object> map = new HashMap<>();
         ModelMapper modelMapper = new ModelMapper();
 
-        UserEntity pUser = userDomainRepository.findUserByID(uId)
-                .orElseThrow(() -> new NotFound("User doesn´t exist, please return a valid Id"));
+        UserEntity pUser = userDomainRepository.findUserByID(uId).orElse(null);
+
+        if(pUser == null){
+            throw new NotFoundException(String.format("The user with id: %s does not exist",uId));
+        }
 
         NewUserDto user = modelMapper.map(pUser, NewUserDto.class);
 
@@ -101,12 +107,15 @@ public class UserService {
         return map;
     }
 
-    public Map<String, String> deleteUsers(int uId){
+    public Map<String, String> deleteUsers(int uId) throws NotFoundException {
 
         Map<String, String> map = new HashMap<>();
 
-        UserEntity pUser = userDomainRepository.findUserByID(uId)
-                .orElseThrow(() -> new NotFound("User doesn´t exist, please return a valid Id"));
+        UserEntity pUser = userDomainRepository.findUserByID(uId).orElse(null);
+
+        if(pUser == null){
+            throw new NotFoundException(String.format("The purchase with id: %s does not exist",uId));
+        }
 
         userDomainRepository.deleteUser(uId);
 
@@ -115,12 +124,15 @@ public class UserService {
 
     }
 
-    public NewUserDto getByEmail(String mail) throws Unauthorized {
+    public NewUserDto getByEmail(String mail){
 
         ModelMapper modelMapper = new ModelMapper();
 
-        UserEntity pUser = userDomainRepository.getByEmail(mail)
-                .orElseThrow(() -> new Unauthorized(""));
+        UserEntity pUser = userDomainRepository.getByEmail(mail).orElse(null);
+
+        if(pUser == null){
+            throw new SecurityException("Incorrect username or password");
+        }
 
         return modelMapper.map(pUser, NewUserDto.class);
     }

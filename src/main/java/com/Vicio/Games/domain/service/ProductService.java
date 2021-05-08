@@ -3,9 +3,9 @@ package com.Vicio.Games.domain.service;
 import com.Vicio.Games.domain.dto.DynamicFilterDto;
 import com.Vicio.Games.domain.dto.NewProductDto;
 import com.Vicio.Games.domain.repository.ProductDomainRepository;
-import com.Vicio.Games.exceptions.NotFound;
 import com.Vicio.Games.persistence.crud.SubcategoryCrudRepository;
 import com.Vicio.Games.persistence.entity.ProductEntity;
+import javassist.NotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,7 +34,7 @@ public class ProductService {
         return map;
     }
 
-    public Map<String, Object> dynamicFilter(String result, String request, int limit, int offset){
+    public Map<String, Object> dynamicFilter(String result, String request, int limit, int offset) {
 
         Map<String, Object> map = new HashMap<>();
         Map<String, Object> page = new HashMap<>();
@@ -51,19 +51,22 @@ public class ProductService {
         page.put("total", counter);
 
         map.put("results", products);
-        map.put("page request",page);
+        map.put("page request", page);
 
         return map;
     }
 
 
-    public Map<String, Object> findByID(int prId, boolean request) {
+    public Map<String, Object> findByID(int prId, boolean request) throws Throwable {
 
         Map<String, Object> map = new HashMap<>();
         ModelMapper modelMapper = new ModelMapper();
 
-        ProductEntity pProduct = productDomainRepository.findProductByID(prId)
-                .orElseThrow(() -> new NotFound("Product does not exist"));
+        ProductEntity pProduct = productDomainRepository.findProductByID(prId).orElse(null);
+
+        if(pProduct == null){
+            throw new NotFoundException(String.format("The product with id: %s does not exist",prId));
+        }
 
         NewProductDto product = modelMapper.map(pProduct, NewProductDto.class);
 

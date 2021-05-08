@@ -2,7 +2,6 @@ package com.Vicio.Games.web.security;
 
 import com.Vicio.Games.domain.dto.NewUserDto;
 import com.Vicio.Games.domain.service.UserService;
-import com.Vicio.Games.exceptions.Unauthorized;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -22,7 +21,7 @@ public class JWTUtil {
 
     private static final String KEY = "@Warl0rd581@";
 
-    public String generateToken(UserDetails userDetails) throws Unauthorized {
+    public String generateToken(UserDetails userDetails) throws Throwable {
 
         Map<String, Object> map = new HashMap<>();
         NewUserDto user = userService.getByEmail(userDetails.getUsername());

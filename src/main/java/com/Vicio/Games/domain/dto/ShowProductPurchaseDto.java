@@ -8,8 +8,6 @@ import lombok.NoArgsConstructor;
 public class ShowProductPurchaseDto {
     private int prId;
     private int quantity;
-    private double totShipCost;
-    private double totProdsCost;
     private double purchaseCost;
     private ShowProductDto product;
 }

@@ -4,10 +4,10 @@ package com.Vicio.Games.web.controller;
 import com.Vicio.Games.domain.dto.NewPurchaseDto;
 import com.Vicio.Games.domain.dto.UpdatePurchaseStatusDto;
 import com.Vicio.Games.domain.service.PurchaseService;
-import com.Vicio.Games.exceptions.BadRequest;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -40,7 +40,7 @@ public class PurchaseController {
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 403, message = "Forbiden")
     })
-    public Map<String, Object> newPurchase(@Valid @RequestBody NewPurchaseDto purchasePayload, BindingResult bindingResult) throws BadRequest {
+    public Map<String, Object> newPurchase(@Valid @RequestBody NewPurchaseDto purchasePayload, BindingResult bindingResult){
         return purchaseService.newPurchase(purchasePayload, bindingResult);
     }
 
@@ -51,7 +51,7 @@ public class PurchaseController {
             @ApiResponse(code = 403, message = "Forbiden"),
             @ApiResponse(code = 404, message = "Not Found")
     })
-    public Map<String, Object> getById(@RequestParam int id){
+    public Map<String, Object> getById(@RequestParam int id) throws NotFoundException {
         return purchaseService.getById(id);
     }
 
@@ -63,7 +63,7 @@ public class PurchaseController {
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 403, message = "Forbiden")
     })
-    public Map<String, Object> updatePurchase(@Valid @RequestBody UpdatePurchaseStatusDto purchasePayload, BindingResult bindingResult) throws BadRequest {
+    public Map<String, Object> updatePurchase(@Valid @RequestBody UpdatePurchaseStatusDto purchasePayload, BindingResult bindingResult) throws NotFoundException {
         return purchaseService.updatePurchase(purchasePayload, bindingResult);
     }
 

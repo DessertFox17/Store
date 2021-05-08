@@ -2,7 +2,7 @@ package com.Vicio.Games.domain.service;
 
 import com.Vicio.Games.domain.dto.NewUserDto;
 import com.Vicio.Games.domain.dto.ShowRoleDto;
-import com.Vicio.Games.exceptions.Unauthorized;
+import javassist.NotFoundException;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -35,24 +35,24 @@ public class StoreUserDetailService implements UserDetailsService {
         return new User(user.getEmail(), "{noop}" + user.getPassword(), getAuthorities(user.getRoId()));
     }
 
-    public UserDetails userAndPasswordValidaion(String username, String password) throws Unauthorized{
+    public UserDetails userAndPasswordValidaion(String username, String password){
 
         NewUserDto user = userService.getByEmail(username);
 
-        if (!user.getEmail().equals(username) || !user.getPassword().equals(password)) {
-           throw new Unauthorized("Username or password does not match");
+        if(!user.getEmail().equals(username) || !user.getPassword().equals(password)){
+            throw new SecurityException("Incorrect username or password");
         }
 
         return loadUserByUsername(username);
     }
 
-    public Collection getAuthorities(int roId) {
+    public Collection getAuthorities(int roId) throws NotFoundException {
         List<GrantedAuthority> authList = getGrantedAuthorities(getRoles(roId));
         return authList;
     }
 
 
-    public List<String> getRoles(int roId) {
+    public List<String> getRoles(int roId) throws NotFoundException {
 
         List<String> roles = new ArrayList<String>();
         ShowRoleDto role = roleService.getRoleById(roId);
