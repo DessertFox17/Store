@@ -3,7 +3,7 @@ package com.Vicio.Games.web.controller;
 
 import com.Vicio.Games.domain.dto.NewImageDto;
 import com.Vicio.Games.domain.service.ImageService;
-import com.Vicio.Games.exceptions.BadRequest;
+import com.Vicio.Games.exceptions.ErrorHandler;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -31,7 +31,7 @@ public class ImageController {
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 403, message = "Forbiden")
     })
-    public Map<String, Object> newImage(@Valid @RequestBody NewImageDto imagePayload, BindingResult bindingResult) throws BadRequest {
+    public Map<String, Object> newImage(@Valid @RequestBody NewImageDto imagePayload, BindingResult bindingResult){
         return imageService.newImage(imagePayload,bindingResult);
     }
 

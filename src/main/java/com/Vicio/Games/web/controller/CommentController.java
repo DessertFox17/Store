@@ -2,14 +2,11 @@ package com.Vicio.Games.web.controller;
 
 import com.Vicio.Games.domain.dto.NewCommentDto;
 import com.Vicio.Games.domain.service.CommentService;
-import com.Vicio.Games.exceptions.BadRequest;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,7 +30,7 @@ public class CommentController {
             @ApiResponse(code = 403, message = "Forbiden"),
             @ApiResponse(code = 404, message = "Bad Request")
     })
-    public Map<String, Object> newCommment(@Valid @RequestBody NewCommentDto commentPayload, BindingResult bindingResult) throws BadRequest {
+    public Map<String, Object> newCommment(@Valid @RequestBody NewCommentDto commentPayload, BindingResult bindingResult){
         return commentService.newComment(commentPayload,bindingResult);
     }
 }

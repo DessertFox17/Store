@@ -7,10 +7,8 @@ import com.Vicio.Games.domain.dto.UpdatePurchaseStatusDto;
 import com.Vicio.Games.domain.repository.ProductDomainRepository;
 import com.Vicio.Games.domain.repository.PurchaseDomaindRepository;
 import com.Vicio.Games.domain.repository.StatusDomainRepository;
-import com.Vicio.Games.exceptions.BadRequest;
-import com.Vicio.Games.exceptions.NotFound;
 import com.Vicio.Games.persistence.entity.PurchaseEntity;
-import lombok.Getter;
+import javassist.NotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,24 +37,24 @@ public class PurchaseService {
 
         Map<String, Object> map = new HashMap<>();
         ModelMapper modelMapper = new ModelMapper();
-        List<NewPurchaseDto> purchases = new ArrayList<>();
+        List<ShowPurchaseDto> purchases = new ArrayList<>();
 
         List<PurchaseEntity> pPurchases = purchaseDomaindRepository.getByClient(usId);
 
-        pPurchases.forEach(purchaseEntity -> purchases.add(modelMapper.map(purchaseEntity, NewPurchaseDto.class)));
+        pPurchases.forEach(purchaseEntity -> purchases.add(modelMapper.map(purchaseEntity, ShowPurchaseDto.class)));
 
         map.put("Purchases", purchases);
 
         return map;
     }
 
-    public Map<String, Object> newPurchase(NewPurchaseDto newPurchaseDto, BindingResult bindingResult) throws BadRequest {
+    public Map<String, Object> newPurchase(NewPurchaseDto newPurchaseDto, BindingResult bindingResult){
 
         Map<String, Object> map = new HashMap<>();
         ModelMapper modelMapper = new ModelMapper();
 
-        if (bindingResult.hasErrors()) {
-            throw new BadRequest("All mandatory fields are incomplete");
+        if(bindingResult.hasErrors()){
+            throw new IllegalArgumentException("all or some mandatory fields are incomplete");
         }
 
         PurchaseEntity purchase = modelMapper.map(newPurchaseDto, PurchaseEntity.class);
@@ -83,37 +81,40 @@ public class PurchaseService {
         return map;
     }
 
-    public Map<String, Object> updatePurchase(UpdatePurchaseStatusDto purchasePayload, BindingResult bindingResult) throws BadRequest {
+    public Map<String, Object> updatePurchase(UpdatePurchaseStatusDto purchasePayload, BindingResult bindingResult) throws NotFoundException {
 
         Map<String, Object> map = new HashMap<>();
 
-        if (bindingResult.hasErrors()) {
-            throw new BadRequest("All mandatory fields are incomplete");
+        if(bindingResult.hasErrors()){
+            throw new IllegalArgumentException("all or some mandatory fields are incomplete");
         }
 
-        PurchaseEntity purchase = purchaseDomaindRepository.getById(purchasePayload.getPuId())
-                .orElseThrow(() -> new NotFound("Purchase doesn't exist"));
+        PurchaseEntity purchase = purchaseDomaindRepository.getById(purchasePayload.getPuId()).orElse(null);
 
+        if(purchase == null){
+            throw new NotFoundException(String.format("The purchase with id: %s does not exist",purchasePayload.getPuId()));
+        }
 
         purchase.setStId(purchasePayload.getStId());
         purchaseDomaindRepository.updatePurchase(purchase);
 
         notificationService.sendNotification(purchasePayload.getUsId(), purchasePayload.getStId());
 
-
         map.put("Message", "Purchase updated succesfully");
         map.put("New Status", statusDomainRepository.findStatusById(purchasePayload.getStId()).get().getName());
         return map;
     }
 
-    public Map<String, Object> getById(int puId) {
+    public Map<String, Object> getById(int puId) throws NotFoundException {
 
         Map<String, Object> map = new HashMap<>();
         ModelMapper modelMapper = new ModelMapper();
 
-        PurchaseEntity pPurchase = purchaseDomaindRepository.getById(puId)
-                .orElseThrow(() -> new NotFound("Purchase not found"));
+        PurchaseEntity pPurchase = purchaseDomaindRepository.getById(puId).orElse(null);
 
+        if(pPurchase == null){
+            throw new NotFoundException(String.format("The purchase with id: %s does not exist",puId));
+        }
         ShowPurchaseDto purchase = modelMapper.map(pPurchase, ShowPurchaseDto.class);
 
         map.put("Purchase", purchase);
@@ -133,10 +134,5 @@ public class PurchaseService {
         map.put("Purchases in Cart", purchases);
 
         return map;
-    }
-
-    private void newPurchasetoPurchaseEntity(ModelMapper modelMapper){
-
-
     }
 }

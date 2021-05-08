@@ -42,7 +42,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/**/user/all").hasAnyAuthority("Super User","Admin")
                 .antMatchers("/**/user/delete").hasAnyAuthority("Super User","Admin")
                 .antMatchers("/**/image/new").hasAnyAuthority("Super User","Admin")
-                .antMatchers("/**/purchase/specific").hasAnyAuthority("Super User","Admin")
                 .antMatchers("/**/purchase/update").hasAnyAuthority("Super User","Admin")
                 .anyRequest()
                 .authenticated().and().sessionManagement()

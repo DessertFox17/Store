@@ -2,11 +2,10 @@ package com.Vicio.Games.domain.service;
 
 import com.Vicio.Games.domain.repository.StatusDomainRepository;
 import com.Vicio.Games.domain.repository.UserDomainRepository;
-import com.Vicio.Games.exceptions.NotFound;
 import com.Vicio.Games.persistence.entity.StatusEntity;
 import com.Vicio.Games.persistence.entity.UserEntity;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -18,6 +17,7 @@ public class NotificationService {
 
     @Autowired
     public NotificationService(JavaMailSender javaMailSender){
+        super();
         this.javaMailSender = javaMailSender;
     }
 
@@ -28,14 +28,19 @@ public class NotificationService {
     private StatusDomainRepository statusDomainRepository;
 
 
-    public void sendNotification(int usId, int stId) throws MailException {
+    public void sendNotification(int usId, int stId) throws NotFoundException {
 
-        UserEntity user = userDomainRepository.findUserByID(usId)
-                .orElseThrow(() -> new NotFound("User not found"));
+        UserEntity user = userDomainRepository.findUserByID(usId).orElse(null);
 
-        StatusEntity status = statusDomainRepository.findStatusById(stId)
-                .orElseThrow(() -> new NotFound("Status not found"));
+        if(user == null){
+            throw new NotFoundException(String.format("The user with id: %s does not exist",usId));
+        }
 
+        StatusEntity status = statusDomainRepository.findStatusById(stId).orElse(null);
+
+        if(status == null){
+            throw new NotFoundException(String.format("The status with id: %s does not exist",stId));
+        }
 
         SimpleMailMessage mail = new SimpleMailMessage();
         mail.setTo(user.getEmail());

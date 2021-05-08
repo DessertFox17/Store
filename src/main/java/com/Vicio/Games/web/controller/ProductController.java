@@ -21,7 +21,7 @@ public class ProductController {
     @ApiOperation(value = "Smart filter",
                   notes = "This endpoint scans the database searching for all related with the param name")
     @ApiResponse(code = 200, message = "Ok")
-    public Map<String, Object> smartFilter(@RequestParam String name){
+    public Map<String, Object> smartFilter(@RequestParam(required = false, defaultValue = "") String name){
         return productService.smartFilter(name);
     }
 
@@ -32,7 +32,7 @@ public class ProductController {
             @ApiResponse(code = 200, message = "Ok"),
             @ApiResponse(code = 404, message = "Not Found")
     })
-    public Map<String, Object> findByID(@RequestParam(required = false) boolean request, @RequestParam int id){
+    public Map<String, Object> findByID(@RequestParam(required = false) boolean request, @RequestParam int id) throws Throwable {
         return productService.findByID(id,request);
     }
 
@@ -44,7 +44,7 @@ public class ProductController {
             @ApiResponse(code = 200, message = "Ok"),
             @ApiResponse(code = 400, message = "Bad Request"),
     })
-    public Map<String, Object> dynamicFilter(@Valid @RequestParam String result,
+    public Map<String, Object> dynamicFilter(@Valid @RequestParam(required = false, defaultValue = "") String result,
                                              @RequestParam(required = false, defaultValue = "5") int limit,
                                              @RequestParam(required = false, defaultValue = "0") int offset,
                                              @RequestParam(required = false) boolean alpha,
