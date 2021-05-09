@@ -40,7 +40,7 @@ public class UserService {
         ModelMapper modelMapper = new ModelMapper();
 
         if(bindingResult.hasErrors()){
-            throw new IllegalArgumentException("all or some mandatory fields are incomplete");
+            throw new IllegalArgumentException("All or some mandatory fields are incomplete");
         }
 
         UserEntity userEntity = modelMapper.map(newUserDto, UserEntity.class);
@@ -57,7 +57,7 @@ public class UserService {
         Map<String, Object> map = new HashMap<>();
 
         if(bindingResult.hasErrors()){
-            throw new IllegalArgumentException("all or some mandatory fields are incomplete");
+            throw new IllegalArgumentException("All or some mandatory fields are incomplete");
         }
 
         UserEntity user = userDomainRepository.findUserByID(uId).orElse(null);
