@@ -2,6 +2,8 @@ package com.Vicio.Games.web.security.filter;
 
 import com.Vicio.Games.domain.service.StoreUserDetailService;
 import com.Vicio.Games.web.security.JWTUtil;
+import io.jsonwebtoken.Jwts;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,6 +17,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Base64;
 
 @Component
 public class JwtFilterRequest extends OncePerRequestFilter {

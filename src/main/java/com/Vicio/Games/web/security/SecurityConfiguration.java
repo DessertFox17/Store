@@ -28,7 +28,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    public void configure(WebSecurity web)throws Exception {
+    public void configure(WebSecurity web){
         web.ignoring().antMatchers("/v2/api-docs", "/configuration/ui",
                 "/swagger-resources/**", "/configuration/security",
                 "/swagger-ui.html", "/webjars/**");
@@ -36,18 +36,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().authorizeRequests()
-                .antMatchers("/**/authenticate","/**/smartfilter","/**/dynamicfilter","/**/product/specific","/**/user/new")
-                .permitAll()
-                .antMatchers("/**/user/all").hasAnyAuthority("Super User","Admin")
-                .antMatchers("/**/user/delete").hasAnyAuthority("Super User","Admin")
-                .antMatchers("/**/image/new").hasAnyAuthority("Super User","Admin")
-                .antMatchers("/**/purchase/update").hasAnyAuthority("Super User","Admin")
-                .anyRequest()
-                .authenticated().and().sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        http.addFilterBefore(jwtFilterRequest, UsernamePasswordAuthenticationFilter.class);
+            http.csrf().disable().authorizeRequests()
+                    .antMatchers("/**/authenticate", "/**/smartfilter", "/**/dynamicfilter", "/**/product/specific", "/**/user/new")
+                    .permitAll()
+                    .antMatchers("/**/user/all").hasAnyAuthority("Super User", "Admin")
+                    .antMatchers("/**/user/delete").hasAnyAuthority("Super User", "Admin")
+                    .antMatchers("/**/image/new").hasAnyAuthority("Super User", "Admin")
+                    .antMatchers("/**/purchase/update").hasAnyAuthority("Super User", "Admin")
+                    .anyRequest()
+                    .authenticated().and().sessionManagement()
+                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+            http.addFilterBefore(jwtFilterRequest, UsernamePasswordAuthenticationFilter.class);
     }
 
 
