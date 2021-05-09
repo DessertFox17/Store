@@ -3,6 +3,7 @@ package com.Vicio.Games.domain.service;
 import com.Vicio.Games.domain.dto.DynamicFilterDto;
 import com.Vicio.Games.domain.dto.NewProductDto;
 import com.Vicio.Games.domain.repository.ProductDomainRepository;
+import com.Vicio.Games.persistence.crud.ProductCrudRepository;
 import com.Vicio.Games.persistence.crud.SubcategoryCrudRepository;
 import com.Vicio.Games.persistence.entity.ProductEntity;
 import javassist.NotFoundException;
@@ -22,6 +23,10 @@ public class ProductService {
 
     @Autowired
     private SubcategoryCrudRepository scrud;
+
+    public ProductService(ProductCrudRepository productCrudRepository) {
+    }
+
 
     public Map<String, Object> smartFilter(String name) {
 

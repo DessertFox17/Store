@@ -78,6 +78,7 @@ public class PurchaseService {
         purchaseDomaindRepository.newPurchase(purchase);
 
         map.put("Message", "Products purchased succesfully");
+        map.put("New Purchase id: ", purchase.getPuId());
         return map;
     }
 

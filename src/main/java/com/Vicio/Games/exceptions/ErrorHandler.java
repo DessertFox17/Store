@@ -1,6 +1,7 @@
 package com.Vicio.Games.exceptions;
 
 import com.Vicio.Games.domain.dto.ErrorStatus;
+import io.jsonwebtoken.ExpiredJwtException;
 import javassist.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -55,7 +56,7 @@ public class ErrorHandler extends Exception{
     }
 
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    @ExceptionHandler(IllegalAccessException.class)
+    @ExceptionHandler({IllegalAccessException.class,ExpiredJwtException.class})
     public Object badRequest(IllegalAccessException e){
 
         ErrorStatus status = new ErrorStatus();

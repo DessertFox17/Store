@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +24,7 @@ public class JWTUtil {
 
     private static final String KEY = "@Warl0rd581@";
 
-    public String generateToken(UserDetails userDetails) throws Throwable {
+    public String generateToken(UserDetails userDetails){
 
         Map<String, Object> map = new HashMap<>();
         NewUserDto user = userService.getByEmail(userDetails.getUsername());
@@ -39,20 +42,20 @@ public class JWTUtil {
     }
 
 
-    public boolean ValidateToken(String token, UserDetails userDetails) {
+    public boolean ValidateToken(String token, UserDetails userDetails){
         return userDetails.getUsername().equals(extractUsername(token))
                 && !isTokenExpired(token);
     }
 
-    private Claims getClaims(String token) {
+    private Claims getClaims(String token){
         return Jwts.parser().setSigningKey(KEY).parseClaimsJws(token).getBody();
     }
 
-    public String extractUsername(String token) {
+    public String extractUsername(String token){
         return getClaims(token).getSubject();
     }
 
-    public boolean isTokenExpired(String token) {
+    public boolean isTokenExpired(String token){
         return getClaims(token).getExpiration().before(new Date());
     }
 

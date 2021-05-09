@@ -2,6 +2,7 @@ package com.Vicio.Games.domain.service;
 
 import com.Vicio.Games.domain.dto.NewCommentDto;
 import com.Vicio.Games.domain.repository.CommentDomainRepository;
+import com.Vicio.Games.persistence.crud.CommentCrudRepository;
 import com.Vicio.Games.persistence.entity.CommentEntity;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,9 @@ public class CommentService {
 
     @Autowired
     private CommentDomainRepository commentDomainRepository;
+
+    public CommentService(CommentCrudRepository commentCrudRepository) {
+    }
 
     public Map<String, Object> newComment(NewCommentDto newCommentDto, BindingResult bindingResult) {
 
